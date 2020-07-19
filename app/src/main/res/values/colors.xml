@@ -5,6 +5,11 @@
     <color name="colorAccent">#03DAC5</color>
 
     <color name="my_color">#532036</color>
+    <color name="my_color1">#E1CFD5</color>
+    <color name="my_color2">#B14D5E</color>
+    <color name="my_color3">#820028</color>
+    <color name="my_color4">#464646</color>
+    <color name="my_color5">#A9A9A9</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="reg">#FF0000</color>

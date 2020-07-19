@@ -186,8 +186,8 @@ public class login_activity extends AppCompatActivity {
                     public void accept(String response) throws Exception {
                         // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
                         // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
-                        Log.d("accept","무슨말이라도 해봐`!~!~!!~");
-                        Toast.makeText(login_activity.this, "" + response + "what?", Toast.LENGTH_SHORT).show();
+                        Log.d("accept",response);
+                        Toast.makeText(login_activity.this, response, Toast.LENGTH_SHORT).show();
                         // loginUser(email, password);
                     }
                 }));

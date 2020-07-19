@@ -63,6 +63,7 @@ public class contact_list_item {
                     String image = cursor.getString(imageIndex);
 
                     contact_list_item item = new contact_list_item(name,number,image);
+                    Log.e("getLocalContacts",item.toString());
                     data.add(item);
                 }
 
