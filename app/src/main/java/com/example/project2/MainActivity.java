@@ -8,8 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -29,15 +31,26 @@ public class MainActivity extends AppCompatActivity {
     private GalleryFragment galleryFragment;
     private Tab3Fragment tab3Fragment;
 
+    String user_name;
+    String user_email;
+
+    @SuppressLint("LongLogTag")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        user_name = intent.getStringExtra("user_name");
+        user_email = intent.getStringExtra("user_email");
+
+        Log.d("Main activity onCreate intent-passed user name",user_name);
+        // Log.d("Main activity onCreate intent-passed user email",user_email);
+
         tabLayout = findViewById(R.id.tab_layout);
 
         // Tab Layout 밑에 inflate 해줄, 3개의 Fragment 객체를 생성.
-        contactFragment = new ContactFragment();
+        contactFragment = new ContactFragment(user_name, user_email);
         galleryFragment = new GalleryFragment();
         tab3Fragment = new Tab3Fragment();
 
@@ -54,27 +67,20 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(tab3Fragment,"tab3");
         viewPager.setAdapter(viewPagerAdapter);
 
-
         TextView back_to_login_button = findViewById(R.id.back_to_login_button);
         back_to_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("result", "success");
+
+                // finish 하기전에 set result 를 하면, login activity 에서 Main Activity 를 부른 것이기 때문에,
+                // Login activity : onActivity Result() 함수가 실행이 된다. 거기서 RESULT_OK 값을 받아서 필요한 행동을 할 수 있다.
+                // intent.putExtra("result", "success"); // intent 는 필요한데, put extra는 할 필요 없다.
                 setResult(RESULT_OK, intent);
                 finish();
             }
         });
 
-        /*
-        Button refresh = findViewById(R.id.button2);
-        refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onRestart();
-            }
-        });
-        */
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

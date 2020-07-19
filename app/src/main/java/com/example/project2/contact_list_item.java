@@ -12,17 +12,20 @@ import java.util.List;
 public class contact_list_item {
 
     // 필수 항목
-    int resID;
     String name;
     String phone_number;
 
-    // 세부 항목
+    public contact_list_item(String name, String phone_number) {
+        this.name = name;
+        this.phone_number = phone_number;
+    }
+
+    /*
     String email_address;
     String website;
     String favored_color;
     String information_public;
 
-    /*
     public static List<contact_list_item> getLocalContacts(Context context){
 
         // ContactsContract.Data 에는 전화번호 하나당, 하나의 relation(document) 가 있다.
@@ -126,6 +129,7 @@ public class contact_list_item {
         this.phone_number = phone_number;
     }
 
+    /*
     public String getEmail_address() {
         return email_address;
     }
@@ -157,4 +161,5 @@ public class contact_list_item {
     public void setInformation_public(String information_public) {
         this.information_public = information_public;
     }
+    */
 }

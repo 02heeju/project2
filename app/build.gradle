@@ -31,6 +31,8 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
+    // JSON 형식 편하게 사용하게 해주는 클라스
+    implementation files('libs\\json-simple-1.1.jar')
     // 오래된 애들 import
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 

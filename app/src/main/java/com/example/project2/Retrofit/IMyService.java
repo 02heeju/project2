@@ -3,21 +3,33 @@ package com.example.project2.Retrofit;
 import io.reactivex.Observable;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface IMyService {
 
-    @POST("register")
+    // 모든 로그인 정보를 가져온다. 필요한 필드가 없다.
+    @POST("account/list")
     @FormUrlEncoded
-    Observable<String> registerUser(
+    Observable<String> get_account_list();
+
+    // 계정 로그인
+    @POST("account/login")
+    @FormUrlEncoded
+    Observable<String> login_with_email_password(
             @Field("email") String email,
-            @Field("name") String name,
             @Field("password") String password);
 
-    @POST("login")
+    // 계정 추가
+    @POST("account/create")
     @FormUrlEncoded
-    Observable<String> loginUser(
+    Observable<String> create_account(
+            @Field("name") String name,
             @Field("email") String email,
             @Field("password") String password);
+
+    // 사용자 이름에 해당하는 컬렉션에서, 모든 연락처 정보를 가져온다.
+    @GET("contacts/contacts_list")
+    Observable<String> get_cloud_contact();
 
 }

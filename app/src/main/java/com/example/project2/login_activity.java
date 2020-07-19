@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.media.MediaSync;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,12 +18,20 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.project2.Retrofit.IMyService;
 import com.example.project2.Retrofit.RetrofitClient;
+import com.facebook.AccessToken;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
@@ -31,6 +40,10 @@ import android.content.Intent;
 
 import com.facebook.CallbackManager;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 public class login_activity extends AppCompatActivity {
 
@@ -51,24 +64,21 @@ public class login_activity extends AppCompatActivity {
     private LoginCallback mLoginCallback;
     private CallbackManager mCallbackManager;
 
-
     @SuppressLint("LongLogTag")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        // Intent argument 가 있는 이유 : 결과 콜백은 프로세스 및 활동을 다시 만들 때 사용할 수 있어야 하므로
-        Log.e("onActivityResult Argument requestCode",Integer.toString(requestCode));
-        Log.e("onActivityResult Argument resultCode",Integer.toString(resultCode));
-        Log.e("onActivityResult Argument data",data.toString());
+        super.onActivityResult(requestCode, resultCode, data);
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+        Log.e("sequence","onActivityResult");
 
         // 로그인 성공, 새로운 액티비티 시작
         if (resultCode == RESULT_OK) {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            // 현재 액티비티를 종료..하지는 않는게 좋을것 같다?
-        }else
-            super.onActivityResult(requestCode, resultCode, data);
+            Log.e("onActivityResult","로그인 시도, 성공한 경우입니당.");
+
+        }else{
+            Log.e("onActivityResult","로그인 시도는 했지만, 취소한 경우입니당.");
+        }
     }
 
     @Override
@@ -84,7 +94,6 @@ public class login_activity extends AppCompatActivity {
         facebook_login_button = (LoginButton) findViewById(R.id.btn_facebook_login);
         facebook_login_button.registerCallback(mCallbackManager, mLoginCallback); // 로그인 응답을 받을경우, m Login Callback 객체의 함수를 실행함! 또 다른 자바파일에 정의되어있음.
         // 버전 낮다고 함. btn_facebook_login.setReadPermissions(Arrays.asList("public_profile", "email"));
-
 
         // DB를 이용하여 로그인
         // Init Service
@@ -168,50 +177,141 @@ public class login_activity extends AppCompatActivity {
 
     // 자원 낭비를 막기 위해 composite Disposable 을 사용한다.
     // disposable 이 일회용이라는 뜻인데, 사용후 바로 free 해주는 기능이 있다.
-    private void registerUser(String email, String name, String password) {
+    private void registerUser(final String email, String name, final String password) {
 
         // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
-        compositeDisposable.add(iMyService.registerUser(email,name,password)
+        compositeDisposable.add(iMyService.create_account(email,name,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturnItem("registerFail")
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String response) throws Exception {
+                        // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
+                        // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
+                        Log.d("accept","무슨말이라도 해봐`!~!~!!~");
                         Toast.makeText(login_activity.this, "" + response + "what?", Toast.LENGTH_SHORT).show();
+                        // loginUser(email, password);
                     }
                 }));
     }
 
     private void loginUser(String email, String password) {
+        Log.e("loginUser:user()","ENTER");
+
         if(TextUtils.isEmpty(email))
         {
             Toast.makeText(this, "Email cannot be null or empty", Toast.LENGTH_SHORT).show();
             return;
         }
+
         if(TextUtils.isEmpty(password))
         {
             Toast.makeText(this, "Password cannot be null or empty", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        compositeDisposable.add(iMyService.loginUser(email,password)
+        compositeDisposable.add(iMyService.login_with_email_password(email,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturnItem("error")
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String response) throws Exception {
-                        if(response.equals("\"Wrong password\"")){
-                            Toast.makeText(login_activity.this, "login fail", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(login_activity.this, "try again", Toast.LENGTH_LONG).show();
-                        }else if (response.equals("\"Login success\"")){
-                            Toast.makeText(login_activity.this, "login success", Toast.LENGTH_LONG).show();
 
-                            // DB 에서 email 을 찾고, 비밀번호를 대조해서, 로그인에 성공!
-                            // 새로운 액티비티 실행~
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        String[] login_result = response.split("/");
+
+                        Log.e("response",response);
+                        if(login_result[0].equals("\"Login Success")){
+                            String name = login_result[1].split("\"")[0];
+                            Log.e("name",name);
+
+                            Intent intent = new Intent(login_activity.this,MainActivity.class);
+                            intent.putExtra("user_name",name);
+                            intent.putExtra("user_email",name);
+
                             startActivity(intent);
+                        }else{
+                            Toast.makeText(login_activity.this, login_result[0], Toast.LENGTH_SHORT).show();
+
                         }
                     }
-                }));
+                })
+
+        );
+    }
+
+    public class LoginCallback implements FacebookCallback<LoginResult> {
+
+        String FB_name;
+        String FB_email;
+
+        // 로그인 성공 시 호출 됩니다. Access Token 발급 성공.
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+            Log.e("sequence","onSuccess");
+            requestMe(loginResult.getAccessToken());
+        }
+
+        // 로그인 창을 닫을 경우, 호출됩니다.
+        @Override
+        public void onCancel() {
+            Log.e("Callback :: ", "onCancel 로그인 성공은 아니고 그냥 닫은 경우입니당");
+        }
+
+        // 로그인 실패 시에 호출됩니다.
+        @Override
+        public void onError(FacebookException error) {
+            Log.e("Callback :: ", "onError : " + error.getMessage());
+        }
+
+        // 사용자 정보 요청
+        public void requestMe(AccessToken token) {
+            Log.e("request","1");
+            Log.e("AccessToken", token.toString());
+            GraphRequest graphRequest = GraphRequest.newMeRequest(token,
+                    new GraphRequest.GraphJSONObjectCallback() {
+
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            Log.e("sequence","onCompleted");
+
+                            /*
+                            graph API 결과로 받은 object 랑 response 객체 결과 확인.
+                            try {
+                                Log.e("object",object.getString("name"));
+                                Log.e("response",object.getString("email"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            */
+
+                            try {
+
+                                JSONObject jsonObject = (JSONObject) object;
+                                FB_name = (String) jsonObject.get("name");
+                                FB_email = (String) jsonObject.get("email");
+
+                                Log.e("FB_name",FB_name);
+                                Log.e("FB_email",FB_email);
+
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                                intent.putExtra("user_name", FB_name);
+                                intent.putExtra("user_email", FB_email);
+
+                                startActivity(intent);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+
+            Bundle parameters = new Bundle();
+            parameters.putString("fields", "id,name,email,gender,birthday");
+            graphRequest.setParameters(parameters);
+            graphRequest.executeAsync();
+        }
     }
 }

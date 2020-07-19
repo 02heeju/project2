@@ -20,6 +20,7 @@ allprojects {
             url 'https://jitpack.io'
         }
     }
+
 }
 
 task clean(type: Delete) {

@@ -10,7 +10,8 @@ public class RetrofitClient {
     public static Retrofit getInstance(){
         if(instance == null)
             instance = new Retrofit.Builder()
-                    .baseUrl("http://192.249.19.243:0180") // In emulator, localhost will changed to 10.0.2.2 컴퓨터 local host랑 값이 다른가??
+                     .baseUrl("http://192.249.19.243:0180/") // In emulator, localhost will changed to 10.0.2.2 컴퓨터 local host랑 값이 다른가??
+                    //.baseUrl("http://192.249.19.242:7880") // In emulator, localhost will changed to 10.0.2.2 컴퓨터 local host랑 값이 다른가??
                     /*
                     WRONG hosts
                     //.baseUrl("http://localhost:3000") // In emulator, localhost will changed to 10.0.2.2 컴퓨터 local host랑 값이 다른가??
