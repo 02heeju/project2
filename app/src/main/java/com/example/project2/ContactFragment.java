@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -20,12 +21,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.project2.Retrofit.IMyService;
 import com.example.project2.Retrofit.RetrofitClient;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -36,13 +33,7 @@ import retrofit2.Retrofit;
 
 public class ContactFragment extends Fragment {
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    // Below my implementation
-
+    // 로그인 액티비티로부터 넘겨받은 로그인 정보
     String user_name;
     String user_email;
 
@@ -68,17 +59,36 @@ public class ContactFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        // 아랫줄 필수.. findViewById를
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.contact_layout,container,false);
 
-        // 로그인 한 사람의 이름이 가장 위에 뜰 수 있도록 하자.
         final TextView user_name_on_top = view.findViewById(R.id.contact_layout_title);
         user_name_on_top.setText(user_name);
 
         listView = view.findViewById(R.id.contact_list_view);
 
+        Button load_from_local_button = view.findViewById(R.id.contact_load_from_local_button);
+        load_from_local_button.setOnClickListener(new OnClickListener() {
+            @SuppressLint("LongLogTag")
+            @Override
+            public void onClick(View view) {
+
+                ArrayList<contact_list_item> items = contact_list_item.getLocalContacts(view.getContext());
+                Log.e("ContactFragment onCreate",Integer.toString(items.size()) + "개의 아이템이 연락처로부터 로딩 되었습니다");
+                Log.e("ContactFragment onCreate",items.toString());
+
+                for (int i=0;i<items.size();i++){
+                    adapter.addItem(new contact_list_item(
+                            items.get(i).getName(),
+                            items.get(i).getPhone_number()));
+                }
+                listView.setAdapter(adapter);
+            }
+        });
+
         // 클라우드에서 불러오기 버튼
-        Button load_button = (Button) view.findViewById(R.id.contact_load_from_cloud_button);
-        load_button.setOnClickListener(new View.OnClickListener() {
+        Button load_button = view.findViewById(R.id.contact_load_from_cloud_button);
+        load_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -116,8 +126,6 @@ public class ContactFragment extends Fragment {
 
                             }
                         }));
-
-
             }
         });
 
@@ -135,51 +143,43 @@ public class ContactFragment extends Fragment {
 
         ArrayList<contact_list_item> items = new ArrayList();
 
-        public void addItem(contact_list_item item) {
-            items.add(item);
-        }
+        public void addItem(contact_list_item item) { items.add(item); }
 
         @Override
-        public int getCount() {
-            return items.size();
-        }
+        public int getCount() { return items.size(); }
 
         @Override
-        public Object getItem(int position) {
-            return items.get(position);
-        }
+        public Object getItem(int position) { return items.get(position); }
 
         @Override
-        public long getItemId(int position) {
-            // 필터링을 하면 Item ID랑 position 이랑 다를 수는 있지만 여기서는 아니다.
-            return position;
-        }
+        public long getItemId(int position) { return position; }
 
         @Override
         public View getView(int position, View convertView, ViewGroup viewGroup) {
 
-            // 인자중에, viewGroup 이랑, convertView 는 어디에 사용되는 애인지 잘 모르겠다.
+            Log.d("getView",Integer.toString(position) + " 번째 리스트 뷰 아이템 생성");
 
-            View v = convertView;
-            LayoutInflater vi = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.contact_list_item_layout, null);
+            // convertView 나 viewGroup 이나 사용되지 않는다.
+            // position 으로, 리스트의 position 번째 아이템의 정보들을 가지고,
+            // 뷰를 구성해주고, 화면에 추가하고 리턴해줄것이다.
 
-            // 어탭터 클래스 내부의 items 데이터로부터 리스트의
-            // 하나의 아이템에 대한 커스텀 뷰를 만들어서 리턴한다.
-            // ContactItemView view = new ContactItemView(getActivity());
-            Log.e("position",Integer.toString(position));
+            // 현재 화면의 inflater 에 contact_list_item_layout 을 추가하여 만든 새로운 view 를 리턴할 것이다.
+
+            LayoutInflater layoutInflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View view = layoutInflater.inflate(R.layout.contact_list_item_layout, null);
+
             contact_list_item item = items.get(position);
 
-            Log.e("what's matter",item.name);
-            Log.e("what's matter",item.phone_number);
-
-            TextView name = v.findViewById(R.id.contact_list_item_name);
-            TextView phoneNumber = v.findViewById(R.id.contact_list_item_phoneNumber);
+            TextView name = view.findViewById(R.id.contact_list_item_name);
+            TextView phoneNumber = view.findViewById(R.id.contact_list_item_phoneNumber);
 
             name.setText(item.name);
             phoneNumber.setText(item.phone_number);
 
-            return v;
+            return view;
         }
+
     }
+
+
 }

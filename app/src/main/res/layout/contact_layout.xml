@@ -1,34 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <Button
         android:id="@+id/contact_load_from_cloud_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="load from contact_cloud"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="4dp"
+        android:background="@android:color/black"
+        android:text="클라우드에서 연락처 정보 가져오기"
         android:textColor="@android:color/white"
-        android:background="@android:color/black"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/contact_load_from_local_button"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView android:id="@+id/contact_layout_title"
+    <Button
+        android:id="@+id/contact_load_from_local_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/contact_load_from_cloud_button"
+        android:background="@android:color/black"
+        android:text="로컬 전화번호부 앱에서 가져오기"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="@id/contact_load_from_cloud_button"
+        app:layout_constraintLeft_toRightOf="@id/contact_load_from_cloud_button"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/contact_layout_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="#C32343"
+        android:text="사용자 이름"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+
+        android:textStyle="bold"
+
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/contact_list_view"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintVertical_bias="0.0"
-        app:layout_constraintVertical_chainStyle="spread"
-        android:text="Contacts"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/contact_load_from_local_button" />
 
     <ListView
         android:id="@+id/contact_list_view"
@@ -39,6 +57,6 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/contact_layout_title"
-        app:layout_constraintVertical_bias="0.1" />
+        app:layout_constraintVertical_bias="0.016" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

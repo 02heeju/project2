@@ -24,12 +24,18 @@ public interface IMyService {
     @POST("account/create")
     @FormUrlEncoded
     Observable<String> create_account(
-            @Field("name") String name,
             @Field("email") String email,
-            @Field("password") String password);
+            @Field("password") String password,
+            @Field("name") String name);
 
     // 사용자 이름에 해당하는 컬렉션에서, 모든 연락처 정보를 가져온다.
     @GET("contacts/contacts_list")
     Observable<String> get_cloud_contact();
+
+    @POST
+    @FormUrlEncoded
+    Observable<String> load_contact_app_contacts(
+            @Field("name") String name,
+            @Field("contents") String contents);
 
 }

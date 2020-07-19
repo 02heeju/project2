@@ -1,10 +1,7 @@
 package com.example.project2;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
-import android.media.MediaSync;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,36 +11,34 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.project2.Retrofit.IMyService;
 import com.example.project2.Retrofit.RetrofitClient;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 // facebook
-import android.content.Intent;
-
-import com.facebook.CallbackManager;
-import com.facebook.login.widget.LoginButton;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 public class login_activity extends AppCompatActivity {
 
@@ -143,17 +138,20 @@ public class login_activity extends AppCompatActivity {
                             @Override
                             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                                 MaterialEditText edt_register_email = (MaterialEditText) register_layout.findViewById(R.id.register_email);
-                                MaterialEditText edt_register_name = (MaterialEditText) register_layout.findViewById(R.id.register_name);
                                 MaterialEditText edt_register_password = (MaterialEditText) register_layout.findViewById(R.id.register_password);
+                                MaterialEditText edt_register_name = (MaterialEditText) register_layout.findViewById(R.id.register_name);
+                                Log.d("register","email" + edt_register_email.getText());
+                                Log.d("register","pass" + edt_register_password.getText());
+                                Log.d("register","name" + edt_register_name.getText());
 
-                                if(TextUtils.isEmpty(edt_register_email.getText().toString()))
-                                {
-                                    Toast.makeText(login_activity.this, "Email cannot be null or empty", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
                                 if(TextUtils.isEmpty(edt_register_name.getText().toString()))
                                 {
                                     Toast.makeText(login_activity.this, "Name cannot be null or empty", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if(TextUtils.isEmpty(edt_register_email.getText().toString()))
+                                {
+                                    Toast.makeText(login_activity.this, "Email cannot be null or empty", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
                                 if(TextUtils.isEmpty(edt_register_password.getText().toString()))
@@ -164,8 +162,8 @@ public class login_activity extends AppCompatActivity {
 
                                 registerUser(
                                         edt_register_email.getText().toString(),
-                                        edt_register_name.getText().toString(),
-                                        edt_register_password.getText().toString());
+                                        edt_register_password.getText().toString(),
+                                        edt_register_name.getText().toString());
 
                             }
                         // 모든 설정을 완료한 후, Dialog(대화상자) 를 띄우는 부분.
@@ -174,13 +172,12 @@ public class login_activity extends AppCompatActivity {
         });
     }
 
-
     // 자원 낭비를 막기 위해 composite Disposable 을 사용한다.
     // disposable 이 일회용이라는 뜻인데, 사용후 바로 free 해주는 기능이 있다.
-    private void registerUser(final String email, String name, final String password) {
+    private void registerUser(final String email, String password, final String name) {
 
         // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
-        compositeDisposable.add(iMyService.create_account(email,name,password)
+        compositeDisposable.add(iMyService.create_account(email,password,name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturnItem("registerFail")
