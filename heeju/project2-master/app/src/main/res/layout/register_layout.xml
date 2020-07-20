@@ -15,9 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:hint="Name"
+        android:fontFamily="@font/binggrae2_bold"
+        android:hint="이름을 입력하세요"
+        android:textColor="@color/my_color4"
         app:met_baseColor="@color/my_color"
-        app:met_textColorHint="@color/my_color"
+        app:met_textColorHint="@color/my_color2"
         app:met_primaryColor="@color/my_color"
         app:met_iconPadding="0dp"/>
 
@@ -26,32 +28,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:hint="Email"
+        android:fontFamily="@font/binggrae2_bold"
+        app:met_textColorHint="@color/my_color3"
+        android:textColor="@color/my_color4"
+        android:hint="이메일을 입력하세요"
         app:met_baseColor="@color/my_color"
-        app:met_textColorHint="@color/my_color"
-        app:met_primaryColor="@color/my_color"
-        />
+        app:met_primaryColor="@color/my_color" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
         android:id="@+id/register_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="Password"
+        android:inputType="textEmailAddress"
+        android:fontFamily="@font/binggrae2_bold"
+        app:met_textColorHint="@color/my_color4"
+        android:textColor="@color/my_color3"
+        android:hint="비밀번호를 입력하세요"
         app:met_baseColor="@color/my_color"
-        app:met_textColorHint="@color/my_color"
-        app:met_primaryColor="@color/my_color"
-        />
-
-    <!--
-    <Button
-    android:id="@+id/button_register"
-    android:textSize="20sp"
-    android:text="REGISTER"
-    android:background="#431f63"
-    android:layout_width="match_parent"
-    android:textColor="@android:color/white"
-    android:layout_height="wrap_content"/>
-    -->
+        app:met_primaryColor="@color/my_color" />
 
 </LinearLayout>

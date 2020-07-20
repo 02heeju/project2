@@ -22,4 +22,15 @@
         <item name="android:colorForeground">#fff</item>
     </style>
 
+    <!--밑에 나와주는 화면을 위한 녀석..-->
+    <style name="BottomSheDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetStyle</item>
+
+    </style>
+
+    <style name="BottomSheetStyle" parent ="Widget.Design.BottomSheet.Modal">
+        <item name = "android:background">@android:color/transparent</item>
+    </style>
+
+
 </resources>
