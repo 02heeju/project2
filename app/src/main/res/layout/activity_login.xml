@@ -1,92 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/main_color"
     android:orientation="vertical"
     tools:context=".login_activity">
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        tools:ignore="Suspicious0dp">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/login_app_name"
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/parrot"
-                android:scaleType="fitXY"/>
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="100dp"
+        android:fontFamily="@font/binggrae2_bold"
+        android:gravity="center_horizontal"
+        android:text="식샤를 합시댜"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/edit_mail"
+        android:layout_width="261dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="160dp"
+        android:background="@color/white"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login_app_name" />
 
-        </FrameLayout>
-    </LinearLayout>
+    <EditText
+        android:id="@+id/edit_password"
+        android:layout_width="260dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/white"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:paddingLeft="20dp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_mail"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/edit_mail"
+        app:layout_constraintTop_toBottomOf="@+id/edit_mail" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:layout_weight="2"
-        android:padding="16dp"
-        android:layout_margin="16dp">
+    <TextView
+        android:id="@+id/txt_create_account"
+        android:layout_width="118dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/md_transparent"
+        android:text="새로 만들기"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/create_account_msg"
+        app:layout_constraintTop_toBottomOf="@+id/create_account_msg"
+        app:layout_constraintVertical_bias="0.018" />
 
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_mail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"
-            android:hint="Email"
-            app:met_baseColor="@color/my_color"
-            app:met_textColorHint="@color/my_color"
-            app:met_primaryColor="@color/my_color"
-            app:met_iconRight="@drawable/ic_email"
-            app:met_iconPadding="0dp"/>
-
-        <com.rengwuxian.materialedittext.MaterialEditText
-            android:id="@+id/edit_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:hint="Password"
-            app:met_baseColor="@color/my_color"
-            app:met_textColorHint="@color/my_color"
-            app:met_primaryColor="@color/my_color"
-            app:met_iconRight="@drawable/ic_password"
-            app:met_iconPadding="0dp"/>
-
-        <TextView
-            android:layout_marginTop="500dp"
-            android:id="@+id/txt_create_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/md_transparent"
-            android:text="+ CREATE ACCOUNT"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/find_password"
+        android:layout_width="118dp"
+        android:layout_height="33dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@drawable/md_transparent"
+        android:text="비밀번호 찾기"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_create_account"
+        app:layout_constraintEnd_toEndOf="@+id/create_account_msg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txt_create_account"
+        app:layout_constraintTop_toTopOf="@+id/txt_create_account" />
 
     <com.facebook.login.widget.LoginButton
         android:id="@+id/btn_facebook_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="261dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/button_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/button_login"
+        app:layout_constraintTop_toBottomOf="@+id/button_login" />
+
+    <TextView
+        android:id="@+id/create_account_msg"
+        android:layout_width="261dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="48dp"
+        android:background="@drawable/md_transparent"
+        android:gravity="center_horizontal"
+        android:text="Don't have an account?\n Get started now!"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/btn_facebook_login"
+        app:layout_constraintStart_toStartOf="@+id/btn_facebook_login"
+        app:layout_constraintTop_toBottomOf="@+id/btn_facebook_login" />
 
     <Button
         android:id="@+id/button_login"
-        android:textSize="20sp"
-        android:text="LOGIN"
-        android:background="#431f63"
-        android:layout_width="match_parent"
-        android:textColor="@android:color/white"
-        android:layout_height="wrap_content"/>
+        android:layout_width="261dp"
+        android:layout_height="30dp"
 
-</LinearLayout>
+        android:layout_marginTop="12dp"
+        android:background="@color/my_color1"
+        android:text="LOGIN"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/edit_password"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/edit_password"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

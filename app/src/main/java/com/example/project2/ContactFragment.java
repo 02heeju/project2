@@ -2,7 +2,9 @@ package com.example.project2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.project2.Retrofit.IMyService;
 import com.example.project2.Retrofit.RetrofitClient;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.json.JSONArray;
@@ -56,7 +61,29 @@ public class ContactFragment extends Fragment {
     private ListView listView;
     private ContactAdapter adapter;
 
-    ArrayList<contact_list_item> cloud_items;
+    // 클라우드에 채우기
+    private void fill_cloud(final String name, final String phone_number) {
+
+        // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
+        Log.e("add_contact","user_name: " + user_name);
+        Log.e("add_contact","name: " + name);
+        Log.e("add_contact","phone_number: " + phone_number);
+
+        compositeDisposable.add(iMyService.add_entry(user_name,name,phone_number)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String response) throws Exception {
+                        // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
+                        // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
+                        // response 를 보고, 성패를 알 수 있다.
+                        Log.d("add_contact","연락처 추가 완료");
+                        Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
+                    }
+                }));
+    }
+
 
     // 자원 낭비를 막기 위해 composite Disposable 을 사용한다.
     // 추가 버튼
@@ -96,64 +123,84 @@ public class ContactFragment extends Fragment {
         adapter = new ContactAdapter();
         listView = view.findViewById(R.id.contact_list_view);
 
-        // 컨택트 하나 추가하는 버튼
-        // CREATE new account 버튼 리스너 설정
-        Button add_to_cloud_button = view.findViewById(R.id.contact_add);
-        add_to_cloud_button.setOnClickListener(new View.OnClickListener() {
+        ImageButton buttonShow = view.findViewById(R.id.buttonShow);
+        buttonShow.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View add_layout = LayoutInflater.from(getActivity()) // changed here
-                        .inflate(R.layout.add_layout, null);
+                BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(
+                        getActivity(),R.style.BottomSheDialogTheme
+                );
+                View bottomSheetView = LayoutInflater.from(getActivity().getApplicationContext())
+                        .inflate(
+                                R.layout.layout_bottom_sheet,
+                                (LinearLayout) getActivity().findViewById(R.id.bottomSheetContainer)
+                        );
+                // 컨택트 하나 추가하는 버튼
+                // CREATE new account 버튼 리스너 설정
+                // Button add_to_cloud_button = view.findViewById(R.id.contact_add);
 
-                // CREATE new account 를 누르면, 보이는 창을 설정하는 부분이다.
-                new MaterialStyledDialog.Builder(getActivity()) // changed here
-                        .setIcon(R.drawable.ic_launcher_background)
-                        .setTitle("아는 사람 추가")
-                        .setDescription("항목을 채워주세요")
-                        .setCustomView(add_layout)
-                        .setNegativeText("CANCEL")
-                        .onNegative(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                // 새로 계정만드는 창에서 CANCEL 을 누르면, 대화상자를 종료한다.
-                                dialog.dismiss();
-                            }
-                        })
+                LinearLayout add_layout = bottomSheetView.findViewById(R.id.contact_add);
+                add_layout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final View add_layout = LayoutInflater.from(getActivity()) // changed here
+                                .inflate(R.layout.add_layout, null);
 
-                        // 새로 계정을 만드는 창에서도, 취소를 할수 있고, 필드 입력후 생성을 누를 수도 있다.
-                        .setPositiveText("REGISTER")
-                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-                            @Override
-                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        // CREATE new account 를 누르면, 보이는 창을 설정하는 부분이다.
+                        new MaterialStyledDialog.Builder(getActivity()) // changed here
+                                .setIcon(R.drawable.ic_launcher_background)
+                                .setTitle("아는 사람 추가")
+                                .setDescription("항목을 채워주세요")
+                                .setCustomView(add_layout)
+                                .setNegativeText("CANCEL")
+                                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        // 새로 계정만드는 창에서 CANCEL 을 누르면, 대화상자를 종료한다.
+                                        dialog.dismiss();
+                                    }
+                                })
 
-                                MaterialEditText editText_add_name = add_layout.findViewById(R.id.add_name);
-                                MaterialEditText editText_add_phone_number = add_layout.findViewById(R.id.add_phone);
+                                // 새로 계정을 만드는 창에서도, 취소를 할수 있고, 필드 입력후 생성을 누를 수도 있다.
+                                .setPositiveText("REGISTER")
+                                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                                    @Override
+                                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
 
-                                String target_name = editText_add_name.getText().toString();
-                                String target_phone_number = editText_add_phone_number.getText().toString();
+                                        MaterialEditText editText_add_name = add_layout.findViewById(R.id.add_name);
+                                        MaterialEditText editText_add_phone_number = add_layout.findViewById(R.id.add_phone);
 
-                                Log.d("add", "name: " + target_name);
-                                Log.d("add", "phone number: " + target_phone_number);
+                                        String target_name = editText_add_name.getText().toString();
+                                        String target_phone_number = editText_add_phone_number.getText().toString();
 
-                                if (TextUtils.isEmpty(target_name)) {
-                                    Toast.makeText(getActivity(), "Name cannot be null or empty", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
-                                if (TextUtils.isEmpty(target_phone_number)) {
-                                    Toast.makeText(getActivity(), "phone number cannot be null or empty", Toast.LENGTH_SHORT).show();
-                                    return;
-                                }
+                                        Log.d("add", "name: " + target_name);
+                                        Log.d("add", "phone number: " + target_phone_number);
 
-                                add_contact(target_name,target_phone_number);
+                                        if (TextUtils.isEmpty(target_name)) {
+                                            Toast.makeText(getActivity(), "Name cannot be null or empty", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
+                                        if (TextUtils.isEmpty(target_phone_number)) {
+                                            Toast.makeText(getActivity(), "phone number cannot be null or empty", Toast.LENGTH_SHORT).show();
+                                            return;
+                                        }
 
-                            }
-                            // 모든 설정을 완료한 후, Dialog(대화상자) 를 띄우는 부분.
-                        }).show();
+                                        add_contact(target_name,target_phone_number);
+
+                                    }
+                                    // 모든 설정을 완료한 후, Dialog(대화상자) 를 띄우는 부분.
+                                }).show();
+                    }
+                });
+
+                //bottomSheetView.findViewById(R.id.buttonShow)
+                bottomSheetDialog.setContentView(bottomSheetView);
+                bottomSheetDialog.show();
             }
         });
 
         // 로컬 연락처에서 리스트뷰 채우기
-        Button load_from_local_button = view.findViewById(R.id.contact_load_from_local_button);
+        Button load_from_local_button = view.findViewById(R.id.phone_to_screen);
         load_from_local_button.setOnClickListener(new OnClickListener() {
             @SuppressLint("LongLogTag")
             @Override
@@ -176,7 +223,7 @@ public class ContactFragment extends Fragment {
         });
 
         // 클라우드에서 불러오기 버튼
-        Button load_button = view.findViewById(R.id.contact_load_from_cloud_button);
+        Button load_button = view.findViewById(R.id.cloud_to_screen);
         load_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

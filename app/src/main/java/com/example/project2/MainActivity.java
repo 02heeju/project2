@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter.addFragment(tab3Fragment,"tab3");
         viewPager.setAdapter(viewPagerAdapter);
 
-        TextView back_to_login_button = findViewById(R.id.back_to_login_button);
+        ImageButton back_to_login_button = findViewById(R.id.back_to_login_button);
         back_to_login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
