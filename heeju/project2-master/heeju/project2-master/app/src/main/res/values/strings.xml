@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">project2</string>
+    <string name="title_menu1">Contacts</string>
+    <string name="title_menu2">Gallery</string>
+    <string name="title_menu3">Tab 3</string>
+
+    <string name="facebook_app_id">952796301809162</string>
+</resources>
