@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ import retrofit2.Retrofit;
 public class login_activity extends AppCompatActivity {
 
     TextView txt_create_account;
-    MaterialEditText edt_login_email,edt_login_password;
+    EditText edt_login_email,edt_login_password;
     Button btn_login;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -96,14 +97,19 @@ public class login_activity extends AppCompatActivity {
         iMyService = retrofitClient.create(IMyService.class);
 
         // 로그인 화면의 이메일, 패스워드 창 xml 로부터 자바 객체 만들기.
-        edt_login_email = (MaterialEditText) findViewById(R.id.edit_mail);
-        edt_login_password = (MaterialEditText) findViewById(R.id.edit_password);
+//        edt_login_email = (MaterialEditText) findViewById(R.id.edit_mail);
+//        edt_login_password = (MaterialEditText) findViewById(R.id.edit_password);
+
+        edt_login_email = findViewById(R.id.edit_mail);
+        edt_login_password = findViewById(R.id.edit_password);
 
         // 로그인 버튼 리스너 설정
         btn_login = (Button) findViewById(R.id.button_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                loginUser(edt_login_email.getText().toString(),
+//                        edt_login_password.getText().toString());
                 loginUser(edt_login_email.getText().toString(),
                         edt_login_password.getText().toString());
             }
@@ -186,8 +192,8 @@ public class login_activity extends AppCompatActivity {
                     public void accept(String response) throws Exception {
                         // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
                         // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
-                        Log.d("accept","무슨말이라도 해봐`!~!~!!~");
-                        Toast.makeText(login_activity.this, "" + response + "what?", Toast.LENGTH_SHORT).show();
+                        Log.d("accept",response);
+                        Toast.makeText(login_activity.this, response, Toast.LENGTH_SHORT).show();
                         // loginUser(email, password);
                     }
                 }));
@@ -208,7 +214,7 @@ public class login_activity extends AppCompatActivity {
             return;
         }
 
-        compositeDisposable.add(iMyService.login_with_email_password(email,password)
+        compositeDisposable.add(iMyService.login(email,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturnItem("error")
