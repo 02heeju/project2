@@ -12,4 +12,5 @@
     <string name="user_name_">사용자 이름</string>
     <string name="cloud_button">클라우드</string>
     <string name="phone_button_text">휴대폰</string>
+    <string name="additional_text">팟</string>
 </resources>

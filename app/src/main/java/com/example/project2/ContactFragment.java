@@ -222,7 +222,7 @@ public class ContactFragment extends Fragment {
             }
         });
 
-        // 클라우드에서 불러오기 버튼
+        // Cloud 내용들로 화면 띄우는 것.
         ImageButton load_button = view.findViewById(R.id.cloud_to_screen);
         load_button.setOnClickListener(new OnClickListener() {
             @Override

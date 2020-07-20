@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Tab Layout 밑에 inflate 해줄, 3개의 Fragment 객체를 생성.
         contactFragment = new ContactFragment(user_name, user_email);
-        galleryFragment = new GalleryFragment();
+        galleryFragment = new GalleryFragment(user_name, user_email);
         tab3Fragment = new Tab3Fragment();
 
         // ViewPager 레이아웃에, Fragment 를 표시할건데, tabLayout 이랑 연결해줘서, swipe 로 fragment 를 전환 할 수 있게해준다.

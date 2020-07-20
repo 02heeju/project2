@@ -69,4 +69,11 @@ public interface IMyService {
             @Field("owner_name") String owner_name,
             @Field("name") String name);
 
+    //bitmap 서버에 전송----희주
+    @POST("gallery/bitmap")
+    @FormUrlEncoded
+    Observable<String> add_bitmap(
+            @Field("owner_name") String owner_name,
+            @Field("bmstring") String bmstring);
+
 }
