@@ -200,7 +200,7 @@ public class ContactFragment extends Fragment {
         });
 
         // 로컬 연락처에서 리스트뷰 채우기
-        Button load_from_local_button = view.findViewById(R.id.phone_to_screen);
+        ImageButton load_from_local_button = view.findViewById(R.id.phone_to_screen);
         load_from_local_button.setOnClickListener(new OnClickListener() {
             @SuppressLint("LongLogTag")
             @Override
@@ -223,7 +223,7 @@ public class ContactFragment extends Fragment {
         });
 
         // 클라우드에서 불러오기 버튼
-        Button load_button = view.findViewById(R.id.cloud_to_screen);
+        ImageButton load_button = view.findViewById(R.id.cloud_to_screen);
         load_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -268,7 +268,6 @@ public class ContactFragment extends Fragment {
 
         // 처음에는 연락처에 있는 정보들을 긁어와서 보여준다.
         // load 클릭 시에는 클라우드에 있는 정보들을 긁어와서 보여줘야 할 것.
-
         return view;
     }
 

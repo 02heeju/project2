@@ -214,7 +214,7 @@ public class login_activity extends AppCompatActivity {
             return;
         }
 
-        compositeDisposable.add(iMyService.login_with_email_password(email,password)
+        compositeDisposable.add(iMyService.login(email,password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturnItem("error")
