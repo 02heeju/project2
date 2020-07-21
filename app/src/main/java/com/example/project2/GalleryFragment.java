@@ -43,7 +43,7 @@ import retrofit2.Retrofit;
 
 
 public class GalleryFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, MediaStoreAdapter.OnClickThumbListener, MediaStoreAdapter_upload.OnClickThumbListener_up{
+        implements LoaderManager.LoaderCallbacks<Cursor>, MediaStoreAdapter.OnClickThumbListener{
 
     // 로그인 액티비티로부터 넘겨받은 로그인 정보
     String user_name;
@@ -64,7 +64,6 @@ public class GalleryFragment extends Fragment
     private final static int MEDIASTORE_LOADER_ID = 0;
     private RecyclerView mThumbnailRecyclerView;
     private MediaStoreAdapter mMediaStoreAdapter;
-    private MediaStoreAdapter_upload mMediaStoreAdapter_upload;
     private MediaStoreAdapter_bm mMediaStoreAdapter_bm;
     private ArrayList<String> list = new ArrayList<>();
 
@@ -79,7 +78,6 @@ public class GalleryFragment extends Fragment
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mThumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mMediaStoreAdapter = new MediaStoreAdapter(this.getActivity(), this, user_name, getActivity());
-        mMediaStoreAdapter_upload = new MediaStoreAdapter_upload(this.getActivity(), this, user_name, getActivity());
         mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(this.getActivity(),this, list);
 
         //phone 버튼 클릭시 핸드폰의 이미지 보이기
@@ -97,9 +95,12 @@ public class GalleryFragment extends Fragment
         toServer_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mMediaStoreAdapter.upload_all();
                 mThumbnailRecyclerView.removeAllViewsInLayout();
                 mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter);
+
                 checkReadExternalStoragePermission();
+                Toast.makeText(getActivity(), "uploaded to server", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -224,20 +225,6 @@ public class GalleryFragment extends Fragment
         videoPlayIntent.setData(videoUri);
         startActivity(videoPlayIntent);
 
-    }
-
-    @Override
-    public void OnClickImage_up(Uri imageUri) {
-        Intent fullScreenIntent = new Intent(getContext(), FullScreenImageActivity.class);
-        fullScreenIntent.setData(imageUri);
-        startActivity(fullScreenIntent);
-    }
-
-    @Override
-    public void OnClickVideo_up(Uri videoUri) {
-        Intent videoPlayIntent = new Intent(getContext(), VideoPlayActivity.class);
-        videoPlayIntent.setData(videoUri);
-        startActivity(videoPlayIntent);
     }
 
 //    @Override

@@ -64,9 +64,19 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
                     @Override
                     public void accept(String response) throws Exception {
                         Log.d("add_bmstring", "비트맵 추가 완료");
-                        Toast.makeText(GalleryFragment_ac, response, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(GalleryFragment_ac, response, Toast.LENGTH_SHORT).show();
                     }
                 }));
+    }
+    //서버에 갤러리 전체 비트맵 업로드
+    public void upload_all(){
+
+        Cursor cursor = mMediaStoreCursor;
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            add_bmstring(BitmapConverter.BitmapToString(getBitmapFromMediaStore(cursor.getPosition())));
+            Log.d("upload_all", "커서 돌아가는 중");
+        }
     }
 
     public interface OnClickThumbListener {
@@ -92,7 +102,7 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
                 .into(holder.getImageView());
 
         //bitmap 서버에 올리기기
-       add_bmstring(BitmapConverter.BitmapToString(getBitmapFromMediaStore(position)));
+       //add_bmstring(BitmapConverter.BitmapToString(getBitmapFromMediaStore(position)));
 
     }
 
