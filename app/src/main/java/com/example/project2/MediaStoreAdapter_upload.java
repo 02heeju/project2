@@ -30,48 +30,27 @@ import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 
 
-public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.ViewHolder> {
+public class MediaStoreAdapter_upload extends RecyclerView.Adapter<MediaStoreAdapter_upload.ViewHolder> {
 
 
     private Cursor mMediaStoreCursor;
     private final Context context;
-    private OnClickThumbListener mOnClickThumbListener;
+    private OnClickThumbListener_up mOnClickThumbListener;
     private String user_name;
     private Activity GalleryFragment_ac;
 
-    // 레트로핏 사용을 위한 변수...
-    Retrofit retrofitClient  = RetrofitClient.getInstance();
-    CompositeDisposable compositeDisposable = new CompositeDisposable();
-    IMyService iMyService = retrofitClient.create(IMyService.class);
 
-
-    public MediaStoreAdapter(Context context, OnClickThumbListener mOnClickThumbListener, String user_name, Activity GalleryFragment_ac) {
+    public MediaStoreAdapter_upload(Context context, OnClickThumbListener_up mOnClickThumbListener, String user_name, Activity GalleryFragment_ac) {
         Log.e("MediaStoreAdapter", "context" + context.toString());
         this.context = context;
         this.mOnClickThumbListener = mOnClickThumbListener;
         this.user_name = user_name;
         this.GalleryFragment_ac = GalleryFragment_ac;
     }
-    //bmstring 서버에 올리기
-    private void add_bmstring(final String bmstring){
-        Log.e("add_bmstring", "username: " + user_name);
-        Log.e("add_bmstring", "bmstring: " + bmstring);
 
-        compositeDisposable.add(iMyService.add_bitmap(user_name,bmstring)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        Log.d("add_bmstring", "비트맵 추가 완료");
-                        Toast.makeText(GalleryFragment_ac, response, Toast.LENGTH_SHORT).show();
-                    }
-                }));
-    }
-
-    public interface OnClickThumbListener {
-        void OnClickImage(Uri imageUri);
-        void OnClickVideo(Uri videoUri);
+    public interface OnClickThumbListener_up {
+        void OnClickImage_up(Uri imageUri);
+        void OnClickVideo_up(Uri videoUri);
     }
 
     @Override
@@ -90,9 +69,6 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
                 .centerCrop()
                 .override(96, 96)
                 .into(holder.getImageView());
-
-        //bitmap 서버에 올리기기
-       add_bmstring(BitmapConverter.BitmapToString(getBitmapFromMediaStore(position)));
 
     }
 
@@ -141,31 +117,6 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
         }
     }
 
-    public Bitmap getBitmapFromMediaStore(int position) {
-        int idIndex = mMediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns._ID);
-        int mediaTypeIndex = mMediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.MEDIA_TYPE);
-
-        mMediaStoreCursor.moveToPosition(position);
-        switch (mMediaStoreCursor.getInt(mediaTypeIndex)) {
-            case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-                return MediaStore.Images.Thumbnails.getThumbnail(
-                        context.getContentResolver(),
-                        mMediaStoreCursor.getLong(idIndex),
-                        MediaStore.Images.Thumbnails.MICRO_KIND,
-                        null
-                );
-            case MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO:
-                return MediaStore.Video.Thumbnails.getThumbnail(
-                    context.getContentResolver(),
-                        mMediaStoreCursor.getLong(idIndex),
-                        MediaStore.Video.Thumbnails.MICRO_KIND,
-                        null
-                );
-            default:
-                return null;
-        }
-    }
-
     private Uri getUriFromMediaStore(int position) {
         int dataIndex = mMediaStoreCursor.getColumnIndex(MediaStore.Files.FileColumns.DATA);
 
@@ -187,10 +138,10 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
 
         switch (mMediaStoreCursor.getInt(mediaTypeIndex)) {
             case MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE:
-                mOnClickThumbListener.OnClickImage(mediaUri);
+                mOnClickThumbListener.OnClickImage_up(mediaUri);
                 break;
             case MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO:
-                mOnClickThumbListener.OnClickVideo(mediaUri);
+                mOnClickThumbListener.OnClickVideo_up(mediaUri);
                 break;
             default:
         }

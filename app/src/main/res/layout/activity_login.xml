@@ -8,37 +8,31 @@
     android:orientation="vertical"
     tools:context=".login_activity">
 
-
-    <TextView
-        android:id="@+id/login_app_name"
-
+    <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="55dp"
-        android:layout_marginTop="112dp"
-        android:fontFamily="@font/binggrae2_bold"
-        android:gravity="center_horizontal"
-        android:text="식샤를 합시댜"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="40sp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/logo_clear"
+        app:layout_constraintBottom_toTopOf="@+id/edit_mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.735"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edit_mail"
         android:layout_width="261dp"
         android:layout_height="42dp"
-        android:layout_marginTop="112dp"
         android:background="@color/white"
+        android:fontFamily="@font/calibri"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:fontFamily="@font/calibri"
         android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_app_name" />
+        tools:layout_editor_absoluteY="279dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edit_password"

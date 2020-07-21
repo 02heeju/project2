@@ -46,7 +46,7 @@
                 android:layout_height="40dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_arrow_back"
-                android:tint="@color/my_color3"
+                android:tint="#040404"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -78,6 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/view_pager"
         app:tabBackground="@color/main_color"
         app:tabGravity="fill"
+        app:tabIndicatorColor="#ACAFBF"
         app:tabMode="fixed"
         app:tabTextColor="@color/black">
 

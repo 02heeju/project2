@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,7 @@ import retrofit2.Retrofit;
 
 
 public class GalleryFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, MediaStoreAdapter.OnClickThumbListener{
+        implements LoaderManager.LoaderCallbacks<Cursor>, MediaStoreAdapter.OnClickThumbListener, MediaStoreAdapter_upload.OnClickThumbListener_up{
 
     // 로그인 액티비티로부터 넘겨받은 로그인 정보
     String user_name;
@@ -63,6 +64,7 @@ public class GalleryFragment extends Fragment
     private final static int MEDIASTORE_LOADER_ID = 0;
     private RecyclerView mThumbnailRecyclerView;
     private MediaStoreAdapter mMediaStoreAdapter;
+    private MediaStoreAdapter_upload mMediaStoreAdapter_upload;
     private MediaStoreAdapter_bm mMediaStoreAdapter_bm;
     private ArrayList<String> list = new ArrayList<>();
 
@@ -77,8 +79,19 @@ public class GalleryFragment extends Fragment
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mThumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mMediaStoreAdapter = new MediaStoreAdapter(this.getActivity(), this, user_name, getActivity());
-        mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(list, this.getActivity());
+        mMediaStoreAdapter_upload = new MediaStoreAdapter_upload(this.getActivity(), this, user_name, getActivity());
+        mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(this.getActivity(),this, list);
 
+        //phone 버튼 클릭시 핸드폰의 이미지 보이기
+        Button phone_button = view.findViewById(R.id.phone_button);
+        phone_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mThumbnailRecyclerView.removeAllViewsInLayout();
+                mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter_upload);
+                checkReadExternalStoragePermission();
+            }
+        });
         //phone -> cloud 버튼 클릭시 핸드폰의 이미지 서버에 업로드
         Button toServer_button = view.findViewById(R.id.toServer_button);
         toServer_button.setOnClickListener(new View.OnClickListener() {
@@ -212,4 +225,28 @@ public class GalleryFragment extends Fragment
         startActivity(videoPlayIntent);
 
     }
+
+    @Override
+    public void OnClickImage_up(Uri imageUri) {
+        Intent fullScreenIntent = new Intent(getContext(), FullScreenImageActivity.class);
+        fullScreenIntent.setData(imageUri);
+        startActivity(fullScreenIntent);
+    }
+
+    @Override
+    public void OnClickVideo_up(Uri videoUri) {
+        Intent videoPlayIntent = new Intent(getContext(), VideoPlayActivity.class);
+        videoPlayIntent.setData(videoUri);
+        startActivity(videoPlayIntent);
+    }
+
+//    @Override
+//    public void OnClickImage_bm(String bmstring) {
+//        ImageView fullScreenImageView = (ImageView) findViewById(R.id.fullScreenImageView_bm);
+//        fullScreenImageView.setImageBitmap(BitmapConverter.StringToBitmap(bmstring));
+//    }
+//
+//    @Override
+//    public void OnClickVideo_bm(String bmstring) {
+//    }
 }
