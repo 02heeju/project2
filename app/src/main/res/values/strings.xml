@@ -13,4 +13,14 @@
     <string name="cloud_button">클라우드</string>
     <string name="phone_button_text">휴대폰</string>
     <string name="additional_text">팟</string>
+
+    <string-array name="theme">
+        <item>Light Vibrant</item>
+        <item>Vibrant</item>
+        <item>Dark Vibrant</item>
+        <item>Light Muted</item>
+        <item>Muted</item>
+        <item>Dark Muted</item>
+    </string-array>
+
 </resources>

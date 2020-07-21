@@ -69,69 +69,70 @@ public class Tab3Fragment extends Fragment {
         adapter = new MenuAdapter();
         listView = view.findViewById(R.id.menu_list_view);
 
-        ImageButton refresh_button = (ImageButton) view.findViewById(R.id.refresh_button);
-        refresh_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
-                Log.e("메뉴 불러오기","on click");
-
-                compositeDisposable.add(iMyService.load_menu()
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<String>() {
-                            @Override
-                            public void accept(String response) throws Exception {
-                                // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
-                                // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
-                                // response 를 보고, 성패를 알 수 있다.
-                                Log.d("refresh","메뉴 로딩 시작");
-                                Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
-
-                                adapter.items.clear();
-
-                                JSONArray jsonArray = new JSONArray(response);
-                                for (int i=0;i<jsonArray.length();i++){
-                                    Log.e("one element" ,jsonArray.get(i).toString());
-
-                                    String owner_name = jsonArray.getJSONObject(i).getString("owner_name");
-                                    String place= jsonArray.getJSONObject(i).getString("place");
-                                    String number_of_people= jsonArray.getJSONObject(i).getString("number");
-                                    String time= jsonArray.getJSONObject(i).getString("time");
-                                    String comment= jsonArray.getJSONObject(i).getString("comment");
-                                    String member= jsonArray.getJSONObject(i).getString("member");
-
-                                    Log.d("check",owner_name);
-                                    Log.d("check",place);
-                                    Log.d("check",number_of_people);
-                                    Log.d("check",time);
-                                    Log.d("check",comment);
-                                    Log.d("check",member);
-
-                                    /*
-                                    예외 처리를 해줘야 하나? 위의 Log.d 를 보고 나서 생각해보자
-                                    if(name.equals("null") || email.equals("null")) {
-                                    }else{
-                                        adapter.addItem(new contact_list_item(name, email));
-                                        Log.e("end",jsonArray.getJSONObject(i).getString("name")+ " " + jsonArray.getJSONObject(i).getString("phone"));
-                                    }
-                                    */
-
-                                   adapter.addItem(new menu_list_item(owner_name, place, number_of_people, time, comment, member));
-
-                                }
-
-                                listView.setAdapter(adapter);
-                                Log.d("refresh","메뉴 로딩, 어댑터 설정까지 완료");
-
-                            }
-                        }));
-            }
-        });
+//        ImageButton refresh_button = (ImageButton) view.findViewById(R.id.refresh_button);
+//        refresh_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
+//                Log.e("메뉴 불러오기","on click");
+//
+//                compositeDisposable.add(iMyService.load_menu()
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(new Consumer<String>() {
+//                            @Override
+//                            public void accept(String response) throws Exception {
+//                                // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
+//                                // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
+//                                // response 를 보고, 성패를 알 수 있다.
+//                                Log.d("refresh","메뉴 로딩 시작");
+//                                Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
+//
+//                                adapter.items.clear();
+//
+//                                JSONArray jsonArray = new JSONArray(response);
+//                                for (int i=0;i<jsonArray.length();i++){
+//                                    Log.e("one element" ,jsonArray.get(i).toString());
+//
+//                                    String owner_name = jsonArray.getJSONObject(i).getString("owner_name");
+//                                    String place= jsonArray.getJSONObject(i).getString("place");
+//                                    String number_of_people= jsonArray.getJSONObject(i).getString("number");
+//                                    String time= jsonArray.getJSONObject(i).getString("time");
+//                                    String comment= jsonArray.getJSONObject(i).getString("comment");
+//                                    String member= jsonArray.getJSONObject(i).getString("member");
+//
+//                                    Log.d("check",owner_name);
+//                                    Log.d("check",place);
+//                                    Log.d("check",number_of_people);
+//                                    Log.d("check",time);
+//                                    Log.d("check",comment);
+//                                    Log.d("check",member);
+//
+//                                    /*
+//                                    예외 처리를 해줘야 하나? 위의 Log.d 를 보고 나서 생각해보자
+//                                    if(name.equals("null") || email.equals("null")) {
+//                                    }else{
+//                                        adapter.addItem(new contact_list_item(name, email));
+//                                        Log.e("end",jsonArray.getJSONObject(i).getString("name")+ " " + jsonArray.getJSONObject(i).getString("phone"));
+//                                    }
+//                                    */
+//
+//                                   adapter.addItem(new menu_list_item(owner_name, place, number_of_people, time, comment, member));
+//
+//                                }
+//
+//                                listView.setAdapter(adapter);
+//                                Log.d("refresh","메뉴 로딩, 어댑터 설정까지 완료");
+//
+//                            }
+//                        }));
+//            }
+//        });
 
         // 메뉴 추가
-        add_menu_button = view.findViewById(R.id.add_menu_button);
+        add_menu_button = view.findViewById(R.id.add_button);
         add_menu_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -218,14 +219,14 @@ public class Tab3Fragment extends Fragment {
             }
         });
 
-        // 메뉴 삭제
-        delete_menu_button = view.findViewById(R.id.delete_menu_button);
-        delete_menu_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                delete_menu_from_cloud();
-            }
-        });
+//        // 메뉴 삭제
+//        delete_menu_button = view.findViewById(R.id.delete_menu_button);
+//        delete_menu_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                delete_menu_from_cloud();
+//            }
+//        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -314,7 +315,8 @@ public class Tab3Fragment extends Fragment {
                         // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
                         // response 를 보고, 성패를 알 수 있다.
                         Log.d("refresh","메뉴 로딩 시작");
-                        Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
+
+                        // Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
 
                         adapter.items.clear();
 

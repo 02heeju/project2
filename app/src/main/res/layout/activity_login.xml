@@ -9,20 +9,22 @@
     tools:context=".login_activity">
 
     <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
         android:src="@drawable/logo_clear"
-        app:layout_constraintBottom_toTopOf="@+id/edit_mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.735"
         tools:ignore="MissingConstraints" />
+
 
     <EditText
         android:id="@+id/edit_mail"
         android:layout_width="261dp"
         android:layout_height="42dp"
+        android:layout_marginTop="40dp"
         android:background="@color/white"
         android:fontFamily="@font/calibri"
         android:hint="Email"
@@ -31,7 +33,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="279dp"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -40,8 +42,8 @@
         android:layout_height="36dp"
         android:layout_marginTop="4dp"
         android:background="@color/white"
-        android:hint="Password"
         android:fontFamily="@font/calibri"
+        android:hint="Password"
         android:inputType="textPassword"
         android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="@+id/edit_mail"
@@ -56,11 +58,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="center"
         android:background="@color/white"
-        android:textColor="@color/black"
         android:fontFamily="@font/binggrae2"
+        android:gravity="center"
         android:text="새로 만들기"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -74,11 +76,11 @@
         android:layout_height="33dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
-        android:text="비밀번호 찾기"
         android:background="@color/white"
-        android:textColor="@color/black"
-        android:gravity="center"
         android:fontFamily="@font/binggrae2"
+        android:gravity="center"
+        android:text="비밀번호 찾기"
+        android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/txt_create_account"
@@ -103,9 +105,9 @@
         android:layout_height="57dp"
         android:layout_marginTop="60dp"
         android:background="@drawable/md_transparent"
+        android:fontFamily="@font/calibri_bold"
         android:gravity="center_horizontal"
         android:text="Don't have an account?\n Get started now!"
-        android:fontFamily="@font/calibri_bold"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="20sp"
