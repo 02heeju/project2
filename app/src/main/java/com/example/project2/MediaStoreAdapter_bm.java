@@ -37,12 +37,19 @@ import retrofit2.Retrofit;
 public class MediaStoreAdapter_bm extends RecyclerView.Adapter<MediaStoreAdapter_bm.ViewHolder> {
 
     private ArrayList<String> mData;
+    private MediaStoreAdapter.OnClickThumbListener mOnClickThumbListener;
     private Context context;
 
-    public MediaStoreAdapter_bm(ArrayList<String> list, Context context) {
-        this.mData = list;
+    public MediaStoreAdapter_bm(Context context, MediaStoreAdapter.OnClickThumbListener mOnClickThumbListener, ArrayList<String> list) {
         this.context = context;
+        this.mOnClickThumbListener = mOnClickThumbListener;
+        this.mData = list;
     }
+
+//    public interface OnClickThumbListener {
+//        void OnClickImage(Uri imageUri);
+//        void OnClickVideo(Uri videoUri);
+//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -55,16 +62,8 @@ public class MediaStoreAdapter_bm extends RecyclerView.Adapter<MediaStoreAdapter
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-
         String bmstring = mData.get(position);
-
-//        Glide.with(context)
-//                .load(mData(position))
-//                .centerCrop()
-//                .override(96, 96)
-//                .into(holder.getImageView());
         holder.getImageView().setImageBitmap(BitmapConverter.StringToBitmap(bmstring));
-
     }
     //새로 만든 함수 ---희주
     public void addItem(String bmstring){

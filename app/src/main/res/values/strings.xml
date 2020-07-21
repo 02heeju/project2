@@ -2,7 +2,7 @@
     <string name="app_name">식샤</string>
     <string name="title_menu1">Contacts</string>
     <string name="title_menu2">Gallery</string>
-    <string name="title_menu3">식샤</string>
+    <string name="title_menu3">Eat together</string>
 
     <string name="facebook_app_id">952796301809162</string>
     <string name="bottom_title">Additional Function</string>
@@ -13,13 +13,4 @@
     <string name="cloud_button">클라우드</string>
     <string name="phone_button_text">휴대폰</string>
     <string name="additional_text">팟</string>
-
-    <string-array name="theme">
-        <item>Light Vibrant</item>
-        <item>Vibrant</item>
-        <item>Dark Vibrant</item>
-        <item>Light Muted</item>
-        <item>Muted</item>
-        <item>Dark Muted</item>
-    </string-array>
 </resources>

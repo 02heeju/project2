@@ -4,40 +4,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/my_color"
+    android:background="@color/main_color"
     android:orientation="vertical"
     tools:context=".login_activity">
 
-
-    <TextView
-        android:id="@+id/login_app_name"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
-        android:fontFamily="@font/binggrae2_bold"
-        android:gravity="center_horizontal"
-        android:text="식샤를      \n     합시댜"
-        android:textAlignment="center"
-        android:textColor="#CDCDCD"
-        android:textSize="40sp"
+        android:src="@drawable/logo_clear"
+        app:layout_constraintBottom_toTopOf="@+id/edit_mail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.735"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edit_mail"
         android:layout_width="261dp"
         android:layout_height="42dp"
-        android:layout_marginTop="112dp"
         android:background="@color/white"
+        android:fontFamily="@font/calibri"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:fontFamily="@font/calibri"
         android:paddingLeft="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_app_name" />
+        tools:layout_editor_absoluteY="279dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/edit_password"
@@ -62,9 +57,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:background="@color/my_color1"
+        android:background="@color/white"
         android:textColor="@color/black"
-        android:fontFamily="@font/ngbold"
+        android:fontFamily="@font/binggrae2"
         android:text="새로 만들기"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -80,10 +75,10 @@
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
         android:text="비밀번호 찾기"
-        android:background="@color/my_color1"
+        android:background="@color/white"
         android:textColor="@color/black"
         android:gravity="center"
-        android:fontFamily="@font/ngbold"
+        android:fontFamily="@font/binggrae2"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/txt_create_account"
@@ -112,7 +107,7 @@
         android:text="Don't have an account?\n Get started now!"
         android:fontFamily="@font/calibri_bold"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/btn_facebook_login"
