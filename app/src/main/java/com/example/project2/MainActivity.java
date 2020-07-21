@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(),0);
 
         // Fragment 의 Title 은 어디에 사용되는지 모르겠다.
-        viewPagerAdapter.addFragment(tab3Fragment,"tab3");
+        viewPagerAdapter.addFragment(tab3Fragment,"eatgether");
         viewPagerAdapter.addFragment(galleryFragment,"gallery");
         viewPagerAdapter.addFragment(contactFragment,"contact");
         viewPager.setAdapter(viewPagerAdapter);
