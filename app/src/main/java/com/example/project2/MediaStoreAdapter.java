@@ -21,6 +21,7 @@ import com.example.project2.Retrofit.IMyService;
 import com.example.project2.Retrofit.RetrofitClient;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -37,6 +38,8 @@ public class MediaStoreAdapter extends RecyclerView.Adapter<MediaStoreAdapter.Vi
     private OnClickThumbListener mOnClickThumbListener;
     private String user_name;
     private Activity GalleryFragment_ac;
+    //bmstring을 위한 변수
+    private ArrayList<String> mData = null;
 
     // 레트로핏 사용을 위한 변수...
     Retrofit retrofitClient  = RetrofitClient.getInstance();

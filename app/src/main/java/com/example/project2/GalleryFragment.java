@@ -1,6 +1,7 @@
 package com.example.project2;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +27,18 @@ import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.project2.Retrofit.IMyService;
+import com.example.project2.Retrofit.RetrofitClient;
+
+import org.json.JSONArray;
+
+import java.util.ArrayList;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+import retrofit2.Retrofit;
 
 
 public class GalleryFragment extends Fragment
@@ -33,6 +47,11 @@ public class GalleryFragment extends Fragment
     // 로그인 액티비티로부터 넘겨받은 로그인 정보
     String user_name;
     String user_email;
+
+    // 레트로핏 사용을 위한 변수...
+    Retrofit retrofitClient  = RetrofitClient.getInstance();
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
+    IMyService iMyService = retrofitClient.create(IMyService.class);
 
     public GalleryFragment(String user_name, String user_email) {
         Log.d("sequence","Gallery Fragment Constructor");
@@ -44,6 +63,8 @@ public class GalleryFragment extends Fragment
     private final static int MEDIASTORE_LOADER_ID = 0;
     private RecyclerView mThumbnailRecyclerView;
     private MediaStoreAdapter mMediaStoreAdapter;
+    private MediaStoreAdapter_bm mMediaStoreAdapter_bm;
+    private ArrayList<String> list = new ArrayList<>();
 
 
     @Nullable
@@ -56,13 +77,56 @@ public class GalleryFragment extends Fragment
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mThumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mMediaStoreAdapter = new MediaStoreAdapter(this.getActivity(), this, user_name, getActivity());
+        mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(list, this.getActivity());
 
+        //phone -> cloud 버튼 클릭시 핸드폰의 이미지 서버에 업로드
         Button toServer_button = view.findViewById(R.id.toServer_button);
         toServer_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mThumbnailRecyclerView.removeAllViewsInLayout();
                 mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter);
                 checkReadExternalStoragePermission();
+            }
+        });
+
+        //cloud 버튼 클릭시 서버에서 이미지 가져오기
+        Button download_button = view.findViewById(R.id.download_button);
+        download_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //서버에서 이미지 가져오기
+
+                compositeDisposable.add(iMyService.get_cloud_bitmap(user_name)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<String>() {
+                            @SuppressLint("LongLogTag")
+                            @Override
+                            public void accept(String response) throws Exception {
+
+                                Log.e("get_cloud_bitmap result",response);
+                                mMediaStoreAdapter_bm.clear();
+
+                                JSONArray jsonArray = new JSONArray(response);
+                                for (int i=0;i<jsonArray.length();i++){
+                                    Log.e("one element" ,jsonArray.get(i).toString());
+                                    String bmstring = jsonArray.getJSONObject(i).getString("bmstring");
+
+                                    if(bmstring.equals("null")) {
+                                    }else{
+                                        mMediaStoreAdapter_bm.addItem(bmstring);
+                                        Log.e("end",jsonArray.getJSONObject(i).getString("bmstring"));
+                                    }
+
+                                }
+                                mThumbnailRecyclerView.removeAllViewsInLayout();
+                                mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter_bm);
+                                Log.e("adapter","FIN");
+
+                            }
+                        }));
+
             }
         });
 

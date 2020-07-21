@@ -76,4 +76,10 @@ public interface IMyService {
             @Field("owner_name") String owner_name,
             @Field("bmstring") String bmstring);
 
+    // 사용자 이름에 해당하는 컬렉션에서, 모든 비트맵 정보를 가져온다.
+    @POST("gallery/gallery_list")
+    @FormUrlEncoded
+    Observable<String> get_cloud_bitmap(
+            @Field("owner_name") String owner_name);
+
 }
