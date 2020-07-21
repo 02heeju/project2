@@ -67,18 +67,21 @@ public class GalleryFragment extends Fragment
     private MediaStoreAdapter_bm mMediaStoreAdapter_bm;
     private ArrayList<String> list = new ArrayList<>();
 
+    private ImageView fullScreenImageView;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.gallery_layout,container,false);
+        fullScreenImageView = (ImageView) view.findViewById(R.id.fullScreenImageView);
         //-----------------------------------Tab2----------------------------------------------
         mThumbnailRecyclerView = (RecyclerView) view.findViewById(R.id.thumbnailRecyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this.getContext(), 3);
         mThumbnailRecyclerView.setLayoutManager(gridLayoutManager);
         mMediaStoreAdapter = new MediaStoreAdapter(this.getActivity(), this, user_name, getActivity());
-        mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(this.getActivity(),this, list);
+        mMediaStoreAdapter_bm = new MediaStoreAdapter_bm(list, fullScreenImageView);
 
         //phone 버튼 클릭시 핸드폰의 이미지 보이기
         Button phone_button = view.findViewById(R.id.phone_button);
@@ -227,13 +230,5 @@ public class GalleryFragment extends Fragment
 
     }
 
-//    @Override
-//    public void OnClickImage_bm(String bmstring) {
-//        ImageView fullScreenImageView = (ImageView) findViewById(R.id.fullScreenImageView_bm);
-//        fullScreenImageView.setImageBitmap(BitmapConverter.StringToBitmap(bmstring));
-//    }
-//
-//    @Override
-//    public void OnClickVideo_bm(String bmstring) {
-//    }
+
 }

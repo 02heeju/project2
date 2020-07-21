@@ -37,19 +37,15 @@ import retrofit2.Retrofit;
 public class MediaStoreAdapter_bm extends RecyclerView.Adapter<MediaStoreAdapter_bm.ViewHolder> {
 
     private ArrayList<String> mData;
-    private MediaStoreAdapter.OnClickThumbListener mOnClickThumbListener;
-    private Context context;
+    private ImageView imageView;
+//    private Context context;
 
-    public MediaStoreAdapter_bm(Context context, MediaStoreAdapter.OnClickThumbListener mOnClickThumbListener, ArrayList<String> list) {
-        this.context = context;
-        this.mOnClickThumbListener = mOnClickThumbListener;
+    public MediaStoreAdapter_bm(ArrayList<String> list, ImageView imageView) {
+//        this.context = context;
+        this.imageView = imageView;
         this.mData = list;
     }
 
-//    public interface OnClickThumbListener {
-//        void OnClickImage(Uri imageUri);
-//        void OnClickVideo(Uri videoUri);
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -78,7 +74,7 @@ public class MediaStoreAdapter_bm extends RecyclerView.Adapter<MediaStoreAdapter
         return mData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView mImageView;
 
@@ -86,10 +82,20 @@ public class MediaStoreAdapter_bm extends RecyclerView.Adapter<MediaStoreAdapter
             super(itemView);
 
             mImageView = (ImageView) itemView.findViewById(R.id.mediastoreImageView);
+//            mImageView.setOnClickListener(this);
         }
 
         public ImageView getImageView() {
             return mImageView;
         }
+
+//        @Override
+//        public void onClick(View view) {
+//
+//            Bitmap picture = BitmapFactory.decodeResource(view.getResources(), R.drawable.icon);
+//            Log.d("getbm", "picture");
+//            imageView.setImageBitmap(picture);
+//
+//        }
     }
 }
