@@ -90,9 +90,6 @@ public class ContactFragment extends Fragment {
         // 아랫줄 필수.. findViewById를
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.contact_layout,container,false);
 
-        final TextView user_name_on_top = view.findViewById(R.id.contact_layout_title);
-        user_name_on_top.setText(user_name);
-
         adapter = new ContactAdapter();
         listView = view.findViewById(R.id.contact_list_view);
 
@@ -207,12 +204,6 @@ public class ContactFragment extends Fragment {
         load_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(TextUtils.isEmpty(user_name_on_top.getText().toString()))
-                {
-                    Toast.makeText(getActivity(), "user name be null or empty", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 compositeDisposable.add(iMyService.get_cloud_contact(user_name)
                         .subscribeOn(Schedulers.io())

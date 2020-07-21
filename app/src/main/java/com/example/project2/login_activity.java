@@ -416,7 +416,9 @@ public class login_activity extends AppCompatActivity {
 
                                 intent.putExtra("user_name", FB_name);
                                 intent.putExtra("user_email", FB_email);
-                                intent.putExtra("user_email", "default"); // 페이스북으로 로그인 할 경우, 기본 theme 제공
+
+                                String[] theme = getResources().getStringArray(R.array.theme);
+                                intent.putExtra("user_email", theme[0]); // 페이스북으로 로그인 할 경우, 기본 theme( 제공
                                 startActivity(intent);
 
                             } catch (JSONException e) {
