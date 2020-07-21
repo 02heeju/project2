@@ -2,9 +2,7 @@ package com.example.project2;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
-import android.text.Layout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -61,32 +59,7 @@ public class ContactFragment extends Fragment {
     private ListView listView;
     private ContactAdapter adapter;
 
-    // 클라우드에 채우기
-    private void fill_cloud(final String name, final String phone_number) {
-
-        // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
-        Log.e("add_contact","user_name: " + user_name);
-        Log.e("add_contact","name: " + name);
-        Log.e("add_contact","phone_number: " + phone_number);
-
-        compositeDisposable.add(iMyService.add_entry(user_name,name,phone_number)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<String>() {
-                    @Override
-                    public void accept(String response) throws Exception {
-                        // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
-                        // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
-                        // response 를 보고, 성패를 알 수 있다.
-                        Log.d("add_contact","연락처 추가 완료");
-                        Toast.makeText(getActivity(), response , Toast.LENGTH_SHORT).show();
-                    }
-                }));
-    }
-
-
-    // 자원 낭비를 막기 위해 composite Disposable 을 사용한다.
-    // 추가 버튼
+    // 클라우드에 연락처 하나 추가
     private void add_contact(final String name, final String phone_number) {
 
         // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
@@ -200,11 +173,18 @@ public class ContactFragment extends Fragment {
         });
 
         // 로컬 연락처에서 리스트뷰 채우기
-        ImageButton load_from_local_button = view.findViewById(R.id.phone_to_screen);
+        final ImageButton load_from_local_button = view.findViewById(R.id.phone_to_screen);
+        final ImageButton load_button = view.findViewById(R.id.cloud_to_screen);
+
         load_from_local_button.setOnClickListener(new OnClickListener() {
             @SuppressLint("LongLogTag")
             @Override
             public void onClick(View view) {
+
+                // 선택된 색상 변경.
+                // load_from_local_button.setColorFilter(Color.argb(255, 255, 255, 255))
+                load_from_local_button.setColorFilter(ContextCompat.getColor(getActivity(), R.color.on_click), android.graphics.PorterDuff.Mode.SRC_IN);
+                load_button.setColorFilter(ContextCompat.getColor(getActivity(), R.color.un_click), android.graphics.PorterDuff.Mode.SRC_IN);
 
                 adapter.items.clear();
 
@@ -222,8 +202,8 @@ public class ContactFragment extends Fragment {
             }
         });
 
-        // Cloud 내용들로 화면 띄우는 것.
-        ImageButton load_button = view.findViewById(R.id.cloud_to_screen);
+        // Cloud 의 연락처들로 리스트뷰 채우기
+        // 위로 갔음. ImageButton load_button = view.findViewById(R.id.cloud_to_screen);
         load_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -241,6 +221,9 @@ public class ContactFragment extends Fragment {
                             @SuppressLint("LongLogTag")
                             @Override
                             public void accept(String response) throws Exception {
+
+                                load_button.setColorFilter(ContextCompat.getColor(getActivity(), R.color.on_click), android.graphics.PorterDuff.Mode.SRC_IN);
+                                load_from_local_button.setColorFilter(ContextCompat.getColor(getActivity(), R.color.un_click), android.graphics.PorterDuff.Mode.SRC_IN);
 
                                 Log.e("get_cloud_contact result",response);
                                 adapter.items.clear();

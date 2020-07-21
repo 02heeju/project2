@@ -15,13 +15,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:fontFamily="@font/binggrae2_bold"
+        android:textSize="14sp"
         android:paddingLeft="4dp"
         android:hint="이름을 입력하세요"
-        android:textColor="@color/my_color4"
+        android:fontFamily="@font/ngbold"
+        android:textColor="@color/black"
+        app:met_textColorHint="#494157"
         app:met_baseColor="@color/my_color"
-        app:met_textColorHint="@color/my_color2"
-        app:met_primaryColor="@color/my_color"
+        app:met_primaryColor="@color/black"
         app:met_iconPadding="0dp"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
@@ -29,12 +30,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
+        android:textSize="14sp"
         android:paddingLeft="4dp"
-        android:fontFamily="@font/binggrae2_bold"
-        app:met_textColorHint="@color/my_color3"
-        android:textColor="@color/my_color4"
+        android:fontFamily="@font/ngbold"
+        app:met_textColorHint="#494157"
+        android:textColor="@color/black"
         android:hint="휴대폰 번호를 입력하세요"
         app:met_baseColor="@color/my_color"
-        app:met_primaryColor="@color/my_color" />
+        app:met_primaryColor="@color/black" />
 
 </LinearLayout>

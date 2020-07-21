@@ -7,8 +7,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,11 +47,15 @@ import retrofit2.Retrofit;
 public class login_activity extends AppCompatActivity {
 
     TextView txt_create_account;
+    TextView find_password;
     EditText edt_login_email,edt_login_password;
     Button btn_login;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService;
+    private String favorite;
+    private String theme;
+    private String user_email;
 
     @Override
     protected void onStop() {
@@ -146,9 +153,30 @@ public class login_activity extends AppCompatActivity {
                                 MaterialEditText edt_register_email = (MaterialEditText) register_layout.findViewById(R.id.register_email);
                                 MaterialEditText edt_register_password = (MaterialEditText) register_layout.findViewById(R.id.register_password);
                                 MaterialEditText edt_register_name = (MaterialEditText) register_layout.findViewById(R.id.register_name);
-                                Log.d("register","email" + edt_register_email.getText());
-                                Log.d("register","pass" + edt_register_password.getText());
-                                Log.d("register","name" + edt_register_name.getText());
+                                Spinner spinner = (Spinner) register_layout.findViewById(R.id.theme_spinner);
+
+                                Log.d("register","email: " + edt_register_email.getText());
+                                Log.d("register","pass: " + edt_register_password.getText());
+                                Log.d("register","name: " + edt_register_name.getText());
+
+                                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getApplicationContext(),
+                                        R.array.theme, android.R.layout.simple_spinner_item);
+                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spinner.setAdapter(adapter);
+
+                                final String[] theme = new String[1];
+
+                                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                        theme[0] = (String) parent.getItemAtPosition(position);
+                                        Log.d("theme",theme[0]);
+                                    }
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> parent) {
+
+                                    }
+                                });
 
                                 if(TextUtils.isEmpty(edt_register_name.getText().toString()))
                                 {
@@ -176,6 +204,85 @@ public class login_activity extends AppCompatActivity {
                         }).show();
             }
         });
+
+        // 비밀번호 찾기
+        // CREATE new account 버튼 리스너 설정
+        find_password = (TextView) findViewById(R.id.find_password);
+        find_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final View find_password_view = LayoutInflater.from(login_activity.this)
+                        .inflate(R.layout.password_find_layout, null);
+
+                // CREATE new account 를 누르면, 보이는 창을 설정하는 부분이다.
+                new MaterialStyledDialog.Builder(login_activity.this)
+                        .setIcon(R.drawable.ic_password)
+                        .setTitle("Registration")
+                        .setDescription("Please fill all fields")
+                        .setCustomView(find_password_view)
+                        .setNegativeText("CANCEL")
+                        .onNegative(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                // 새로 계정만드는 창에서 CANCEL 을 누르면, 대화상자를 종료한다.
+                                dialog.dismiss();
+                            }
+                        })
+
+                        // 새로 계정을 만드는 창에서도, 취소를 할수 있고, 필드 입력후 생성을 누를 수도 있다.
+                        .setPositiveText("REGISTER")
+                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+                            @Override
+                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                MaterialEditText find_password_name_text = (MaterialEditText) find_password_view.findViewById(R.id.find_password_name);
+                                MaterialEditText find_password_email_text = (MaterialEditText) find_password_view.findViewById(R.id.find_password_email);
+                                Log.d("register","name" + find_password_name_text.getText());
+                                Log.d("register","email" + find_password_email_text.getText());
+
+
+                                if(TextUtils.isEmpty(find_password_name_text.getText().toString()))
+                                {
+                                    Toast.makeText(login_activity.this, "Name cannot be null or empty", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                                if(TextUtils.isEmpty(find_password_email_text.getText().toString()))
+                                {
+                                    Toast.makeText(login_activity.this, "Email cannot be null or empty", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+
+                                find_password_with_name_email(
+                                        find_password_name_text.getText().toString(),
+                                        find_password_email_text.getText().toString());
+
+                            }
+                            // 모든 설정을 완료한 후, Dialog(대화상자) 를 띄우는 부분.
+                        }).show();
+            }
+        });
+    }
+
+    @SuppressLint("LongLogTag")
+    private void find_password_with_name_email(String name, String email) {
+        Log.d("find_password_with_name_email","entered");
+
+        // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
+        compositeDisposable.add(iMyService.find_password(name,email)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .onErrorReturnItem("find password failed")
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String response) throws Exception {
+                        // 기본적으로 register 한다고, 로그인이 바로 되는건 아닌데,
+                        // 여기에서 loginUser 를 불러주면, 할 수 있긴 하겠다.
+                        Log.d("accept",response);
+                        Toast.makeText(login_activity.this, "비밀번호를 찾았습니다", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(login_activity.this, response, Toast.LENGTH_LONG).show();
+                        // loginUser(email, password);
+                    }
+                }));
+
     }
 
     // 자원 낭비를 막기 위해 composite Disposable 을 사용한다.
@@ -183,7 +290,7 @@ public class login_activity extends AppCompatActivity {
     private void registerUser(final String email, String password, final String name) {
 
         // iMyService.registerUser() 함수는 Observable<String> 을 리턴한다.
-        compositeDisposable.add(iMyService.create_account(email,password,name)
+        compositeDisposable.add(iMyService.create_account(email,password,name,favorite)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturnItem("registerFail")
@@ -226,12 +333,19 @@ public class login_activity extends AppCompatActivity {
 
                         Log.e("response",response);
                         if(login_result[0].equals("\"Login Success")){
-                            String name = login_result[1].split("\"")[0];
+                            String name = login_result[1];
+                            String theme = login_result[2];
                             Log.e("name",name);
+                            Log.e("theme",theme);
 
                             Intent intent = new Intent(login_activity.this,MainActivity.class);
+
+                            // 이름은 가져와야 하고,
+                            // 이메일은 방금 넘겨주면서 그냥 알고있고
+                            // theme 은 가져와야 한다.
                             intent.putExtra("user_name",name);
-                            intent.putExtra("user_email",name);
+                            intent.putExtra("user_email",user_email);
+                            intent.putExtra("theme",theme);
 
                             startActivity(intent);
                         }else{
@@ -302,7 +416,7 @@ public class login_activity extends AppCompatActivity {
 
                                 intent.putExtra("user_name", FB_name);
                                 intent.putExtra("user_email", FB_email);
-
+                                intent.putExtra("user_email", "default"); // 페이스북으로 로그인 할 경우, 기본 theme 제공
                                 startActivity(intent);
 
                             } catch (JSONException e) {

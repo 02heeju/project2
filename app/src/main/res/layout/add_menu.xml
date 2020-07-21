@@ -6,65 +6,64 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:padding="16dp"
-    tools:context=".login_activity">
+    android:layout_margin="16dp">
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/register_name"
+        android:textSize = "12sp"
+        android:id="@+id/add_menu_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:fontFamily="@font/ngbold"
-        android:hint="이름을 입력하세요"
-        android:paddingLeft="4dp"
-        android:textColor="@color/my_color4"
+        android:hint="음식(음식점) 이름 "
+        android:textColor="@color/black"
         app:met_baseColor="@color/my_color"
-        app:met_textColorHint="@color/my_color2"
+        app:met_textColorHint="@color/black"
+        android:paddingLeft="4dp"
+
         app:met_primaryColor="@color/my_color"
         app:met_iconPadding="0dp"/>
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/register_email"
+        android:textSize = "12sp"
+        android:id="@+id/add_menu_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
-        android:paddingLeft="4dp"
         android:fontFamily="@font/ngbold"
-        app:met_textColorHint="@color/my_color3"
-        android:textColor="@color/my_color4"
-        android:hint="이메일을 입력하세요"
+        app:met_textColorHint="@color/black"
+        android:textColor="@color/black"
+        android:paddingLeft="4dp"
+        android:hint="시간을 입력해주세요"
         app:met_baseColor="@color/my_color"
         app:met_primaryColor="@color/my_color" />
 
     <com.rengwuxian.materialedittext.MaterialEditText
-        android:id="@+id/register_password"
+        android:textSize = "12sp"
+        android:id="@+id/add_menu_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:fontFamily="@font/ngbold"
-        app:met_textColorHint="@color/my_color4"
-        android:textColor="@color/my_color3"
-        android:hint="비밀번호를 입력하세요"
+        app:met_textColorHint="@color/black"
+        android:textColor="@color/black"
         android:paddingLeft="4dp"
+        android:hint="모집인원 수"
         app:met_baseColor="@color/my_color"
         app:met_primaryColor="@color/my_color" />
 
-    <TextView
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:textSize = "12sp"
+        android:id="@+id/add_menu_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
         android:fontFamily="@font/ngbold"
+        app:met_textColorHint="#0A9EE1"
+        android:textColor="@color/colorAccent"
         android:paddingLeft="4dp"
-        android:text="테마를 고르세요"
-        android:textColor="@color/my_color3"
-        android:textSize="20sp" />
-
-    <Spinner
-        android:layout_marginTop="10dp"
-        android:id="@+id/theme_spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:entries="@array/theme" />
-
+        android:hint="하고싶은 말을 입력하세요"
+        app:met_baseColor="@color/my_color"
+        app:met_primaryColor="@color/my_color" />
 
 </LinearLayout>

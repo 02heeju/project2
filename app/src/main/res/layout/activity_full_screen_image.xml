@@ -7,9 +7,10 @@
 
 <!-- 갤러리 - 이미지 클릭시 큰 화면 -->
     <ImageView
+        android:id="@+id/fullScreenImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fullScreenImageView"
+        android:background="#CDCDCD"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

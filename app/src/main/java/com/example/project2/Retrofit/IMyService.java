@@ -21,7 +21,15 @@ public interface IMyService {
     Observable<String> create_account(
             @Field("email") String email,
             @Field("password") String password,
-            @Field("name") String name);
+            @Field("name") String name,
+            @Field("favorite") String favorite);
+
+    // 비밀번호 찾기
+    @POST("account/find_password")
+    @FormUrlEncoded
+    Observable<String> find_password(
+            @Field("name") String name,
+            @Field("email") String email);
 
     // 사용자 이름에 해당하는 컬렉션에서, 모든 연락처 정보를 가져온다.
     @POST("contacts/contacts_list")
@@ -57,20 +65,26 @@ public interface IMyService {
             @Field("place") String place,
             @Field("number") String number,
             @Field("time") String time,
-            @Field("member") String member);
+            @Field("comment") String comment);
 
-    @GET("contacts/menu_list")
+    // Tab 3
+    // 메뉴 삭제
+    @POST("/contacts/delete_menu")
     @FormUrlEncoded
-    Observable<String> menu_list();
+    Observable<String> delete_menu(
+            @Field("owner_name") String owner_name);
 
-    @POST("contacts/join")
+    @GET("/contacts/menu_list")
+    Observable<String> load_menu();
+
+    @POST("/contacts/join")
     @FormUrlEncoded
     Observable<String> join(
             @Field("owner_name") String owner_name,
             @Field("name") String name);
 
     //bitmap 서버에 전송----희주
-    @POST("gallery/bitmap")
+    @POST("/gallery/bitmap")
     @FormUrlEncoded
     Observable<String> add_bitmap(
             @Field("owner_name") String owner_name,

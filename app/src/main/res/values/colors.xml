@@ -20,5 +20,6 @@
     <color name="green">#00FF00</color>
     <color name="blue">#0000FF</color>
     <color name="main_color">#D6E7EE</color>
-
+    <color name="un_click">#868A8C</color>
+    <color name="on_click">#229FD8</color>
 </resources>
