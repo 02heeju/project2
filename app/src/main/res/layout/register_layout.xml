@@ -59,11 +59,11 @@
         android:textColor="@color/my_color3"
         android:textSize="20sp" />
 
-<!--    <Spinner-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:id="@+id/theme_spinner"-->
-<!--        android:layout_width="fill_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:entries="@array/theme" />-->
+    <Spinner
+        android:layout_marginTop="10dp"
+        android:id="@+id/theme_spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/theme" />
 
 </LinearLayout>
