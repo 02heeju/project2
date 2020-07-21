@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/contact_layout_title"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="4dp"
+    <EditText
+        android:id="@+id/contact_search"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:hint="전화번호로 검색..."
+        android:textColorHint="@color/black"
         android:background="@drawable/md_transparent"
         android:text="@string/user_name_"
         android:textColor="#FFFFFF"
@@ -24,56 +26,36 @@
         android:id="@+id/cloud_to_screen"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginStart="204dp"
-        android:layout_marginLeft="204dp"
         android:background="@drawable/md_transparent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_cloud"
         android:tint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintStart_toEndOf="@+id/contact_layout_title"
-        app:layout_constraintTop_toTopOf="@+id/contact_layout_title" />
+        tools:layout_editor_absoluteX="299dp"
+        tools:layout_editor_absoluteY="17dp" />
 
     <ImageButton
         android:id="@+id/phone_to_screen"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/md_transparent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_phone"
         android:tint="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/cloud_to_screen"
-        app:layout_constraintTop_toTopOf="@+id/cloud_to_screen"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:layout_editor_absoluteX="355dp"
+        tools:layout_editor_absoluteY="17dp" />
 
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_marginTop="12dp"
         android:background="@color/main_color"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contact_layout_title"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:layout_editor_absoluteY="74dp" />
 
     <ListView
         android:id="@+id/contact_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:layout_constraintVertical_bias="0.0" />
+        tools:layout_editor_absoluteY="134dp" />
 
     <ImageButton
         android:id="@+id/buttonShow"
@@ -82,11 +64,7 @@
         android:background="@drawable/md_transparent"
         android:src="@drawable/ic_big_add"
         android:tint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.888"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="631dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

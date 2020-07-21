@@ -1,6 +1,5 @@
 package com.example.project2;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,45 +50,14 @@ public class Tab3Fragment extends Fragment {
     CompositeDisposable compositeDisposable = new CompositeDisposable();
     IMyService iMyService = retrofitClient.create(IMyService.class);
 
-    public Tab3Fragment(String user_name, String user_email) {
-        this.user_name = user_name;
-        this.user_email = user_email;
-    }
-
     private ListView listView;
     private MenuAdapter adapter;
     Button add_menu_button;
     Button delete_menu_button;
 
-    // UTILITY
-    private boolean checkEmpty(String comment) {
-        if(TextUtils.isEmpty(comment))
-            return true;
-        else
-            return false;
-    }
-
-    public boolean CheckNumber(String str){
-        char check;
-
-        if(str.equals(""))
-        {
-            //문자열이 공백인지 확인
-            return false;
-        }
-
-        for(int i = 0; i<str.length(); i++){
-            check = str.charAt(i);
-            if( check < 48 || check > 58)
-            {
-                //해당 char값이 숫자가 아닐 경우
-                return false;
-            }
-
-        }
-        return true;
-    }
-
+    BottomSheetBehavior bottomSheetBehavior;
+    BottomSheetDialog bottomSheetDialog;
+    View bottom_sheet;
 
     @Nullable
     @Override
@@ -261,7 +230,64 @@ public class Tab3Fragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                bottom_sheetDia
+
+                menu_list_item item = (menu_list_item) adapter.getItem(position);
+
+                String[] num_people = item.number_of_people.split("=");
+                String[] members = item.member.split("=");
+
+                int current_num_people = Integer.parseInt(num_people[0]);
+                int maximum_num_people = Integer.parseInt(num_people[1]);
+
+                TextView result_titleview = view.findViewById(R.id.result_title);
+                TextView result_sub_titleview = view.findViewById(R.id.result_sub_title);
+                ImageView result_imageview = view.findViewById(R.id.result_image);
+                // TextView menu_directionview = view.findViewById(R.id.menu_direction);
+                TextView buttonCloseview = view.findViewById(R.id.buttonClose);
+
+                buttonCloseview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // dismiss 같은걸 해야할 것 같은데.
+                    }
+                });
+
+                if(current_num_people < maximum_num_people)
+                {
+                    result_titleview.setText("현재 참여한 사람");
+                    result_imageview.setImageResource(R.drawable.people);
+                    result_sub_titleview.setText(item.member.replace('=','\n'));
+                    result_sub_titleview.setTextSize(20);
+                    result_sub_titleview.setTextColor(0);
+                }
+                else
+                {
+                    for (int i=0;i<members.length;i++)
+                    {
+                        String name = members[i].split("/")[0];
+                        String role = members[i].split("/")[1];
+                        if(name == user_name)
+                        {
+                            if(role.equals("d"))
+                            {
+                                // Im driver
+                                result_imageview.setImageResource(R.drawable.driver);
+                                result_sub_titleview.setText(user_name + " 님은 “버스 드라이버”입니다.\n 메뉴를 신중하게 골라주십시오.");
+                            }else if(role.equals("p"))
+                            {
+                                result_imageview.setImageResource(R.drawable.payer);
+                                result_sub_titleview.setText(user_name + " 님은 “총대”입니다.\n 카드를 준비해 주십시오.");
+                            }else
+                            {
+                                result_imageview.setImageResource(R.drawable.payer);
+                                result_sub_titleview.setText(user_name + " 님은 “승객”입니다.\n 남은 음식은 그래도 치워주는 매너.");
+
+                            }
+                        }
+
+                    }
+                }
+
 
 
 
@@ -374,10 +400,6 @@ public class Tab3Fragment extends Fragment {
                 }));
     }
 
-    BottomSheetBehavior bottomSheetBehavior;
-    BottomSheetDialog bottomSheetDialog;
-    View bottom_sheet;
-
     public class MenuAdapter extends BaseAdapter {
 
         ArrayList<menu_list_item> items = new ArrayList();
@@ -416,6 +438,7 @@ public class Tab3Fragment extends Fragment {
             commentView.setText(item.comment);
 
             // 기본적으로는 띄워주고 덮어주자.
+            // item 값은 그대로 두자
             number_of_peopleView.setText(item.number_of_people.replace('=','/'));
 
             String number = item.number_of_people;
@@ -429,4 +452,41 @@ public class Tab3Fragment extends Fragment {
         }
 
     }
+
+    // CONSTRUCTOR
+    public Tab3Fragment(String user_name, String user_email) {
+        this.user_name = user_name;
+        this.user_email = user_email;
+    }
+
+
+    // UTILITY
+    private boolean checkEmpty(String comment) {
+        if(TextUtils.isEmpty(comment))
+            return true;
+        else
+            return false;
+    }
+
+    public boolean CheckNumber(String str){
+        char check;
+
+        if(str.equals(""))
+        {
+            //문자열이 공백인지 확인
+            return false;
+        }
+
+        for(int i = 0; i<str.length(); i++){
+            check = str.charAt(i);
+            if( check < 48 || check > 58)
+            {
+                //해당 char값이 숫자가 아닐 경우
+                return false;
+            }
+
+        }
+        return true;
+    }
+
 }
