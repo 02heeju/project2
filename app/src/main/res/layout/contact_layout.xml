@@ -5,58 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="34dp"
+        android:src="@drawable/search"
+        app:layout_constraintEnd_toStartOf="@+id/contact_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contact_search" />
 
     <EditText
         android:id="@+id/contact_search"
-        android:layout_width="259dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/my_color1"
-        android:gravity="center_vertical"
+        android:layout_width="191dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginLeft="64dp"
+        android:background="@color/colorDivider"
         android:foregroundGravity="center_vertical"
-        android:scrollbarDefaultDelayBeforeFade="@android:integer/config_mediumAnimTime"
+        android:gravity="center_vertical"
         android:hint="전화번호로 검색..."
         android:paddingRight="10dp"
+        android:scrollbarDefaultDelayBeforeFade="@android:integer/config_mediumAnimTime"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.055"
+        app:layout_constraintVertical_bias="0.027"
         tools:ignore="RtlCompat" />
 
     <ImageButton
         android:id="@+id/cloud_to_screen"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_width="36dp"
+        android:layout_height="34dp"
         android:background="@drawable/md_transparent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_cloud"
         android:tint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toStartOf="@+id/phone_to_screen"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.409"
+        app:layout_constraintStart_toEndOf="@+id/contact_search"
+        app:layout_constraintTop_toTopOf="@+id/contact_search"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
         android:id="@+id/phone_to_screen"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_width="34dp"
+        android:layout_height="33dp"
         android:background="@drawable/md_transparent"
         android:scaleType="fitXY"
         android:src="@drawable/ic_phone"
         android:tint="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/view2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.794"
+        app:layout_constraintStart_toEndOf="@+id/contact_search"
+        app:layout_constraintTop_toTopOf="@+id/contact_search"
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/view2"
@@ -78,7 +86,11 @@
         android:background="@drawable/md_transparent"
         android:src="@drawable/ic_big_add"
         android:tint="@color/black"
-        tools:layout_editor_absoluteX="312dp"
-        tools:layout_editor_absoluteY="631dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view2"
+        app:layout_constraintVertical_bias="0.958" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

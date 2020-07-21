@@ -8,7 +8,7 @@
     <!-- 갤러리 메인 화면-->
     <ImageView
         android:id="@+id/mediastoreImageView"
-        android:background="#888888"
+        android:background="#FFFFFF"
         android:src="@drawable/square"
         android:layout_width="128dp"
         android:layout_height="128dp"

@@ -88,7 +88,7 @@ public class GalleryFragment extends Fragment
             @Override
             public void onClick(View view) {
                 mThumbnailRecyclerView.removeAllViewsInLayout();
-                mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter_upload);
+                mThumbnailRecyclerView.setAdapter(mMediaStoreAdapter);
                 checkReadExternalStoragePermission();
             }
         });

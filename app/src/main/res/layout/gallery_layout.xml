@@ -7,44 +7,49 @@
 
     <Button
         android:id="@+id/phone_button"
-        android:layout_width="120dp"
-        android:layout_height="57dp"
+        android:layout_width="88dp"
+        android:layout_height="46dp"
+        android:background="@color/colorDivider"
         android:text="Phone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/toServer_button"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/toServer_button"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.001" />
 
     <Button
         android:id="@+id/toServer_button"
-        android:layout_width="120dp"
-        android:layout_height="57dp"
+        android:layout_width="72dp"
+        android:layout_height="47dp"
+        android:background="@color/colorDivider"
         android:text="->"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.019" />
+        app:layout_constraintVertical_bias="0.023" />
 
     <Button
         android:id="@+id/download_button"
-        android:layout_width="120dp"
-        android:layout_height="57dp"
+        android:layout_width="86dp"
+        android:layout_height="43dp"
+        android:background="@color/colorDivider"
         android:text="CLOUD"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintHorizontal_bias="0.771"
         app:layout_constraintStart_toEndOf="@+id/toServer_button"
         app:layout_constraintTop_toTopOf="@+id/toServer_button"
-        app:layout_constraintVertical_bias="0.001" />
+        app:layout_constraintVertical_bias="0.004" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/thumbnailRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
