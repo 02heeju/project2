@@ -3,3 +3,20 @@
 TeamMates : 02heeju , auaicn
 Project Term : 07/15 ~ 07/22
 
+Activity 구성
+1. MainActivity
+2. LoginActivity
+3. SplashActivity
+4. VideoPlayActivity
+5. FullScreenImageActivity
+
+Fragment 구성
+Contact Fragment
+Gallery Fragment
+Tab3 Fragment
+
+
+Used Retrofit
+Bitmap Converter
+MediaStore Adapter
+VideoPlay Activity
