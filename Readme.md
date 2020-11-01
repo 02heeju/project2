@@ -63,8 +63,8 @@ Fragment 간의 이동은 ViewPager 를 통하여 구현하였습니다.
 
 추가적인 소스코드로는  
 Customized List 를 구현하기 위한, 
--- Contact_list_item class
--- menu_list_item
+- Contact_list_item class
+- menu_list_item
 - MediaStoreAdapter
 - bitmapconverter
 등이 있습니다.  
